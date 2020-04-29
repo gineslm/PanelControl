@@ -1,0 +1,130 @@
+<div class="modulo" [ngClass]="{'disabled':!editar}">
+    <div class="explanation_modulo">DragDropList: ordenación de Array de Imagenes de BBDD </div>
+    <div id="dragdroplist">
+
+        <div class="group_div_image" *ngFor="let item of arrImages; index as i">
+            <!-- si hoveri es distinto de dragi && hoveri es distinto de dragi+1 && hoveri === i => estilo anima -->
+            <div class="i_div_drop" (drop)="drop( i)" (dragenter)="allowDrop($event,i)" (dragleave)="allowDrop()" [ngClass]="{'animadrop':(i === hoverI)}">
+
+            </div>
+
+            <div id="listaImg_{{i}}" class="i_div_item" (click)="select(item)" [ngClass]="{'selectedImage': item._id === selectedImage._id }">
+                <span class="folder_name">{{item.folder}}</span>
+                <img src="../assets/images/nostromo.jpg" alt="{{item.alt}}" draggable="true" (dragstart)="drag(i,item)">
+                <span>{{item.name + item.extension}}</span>
+            </div>
+
+        </div>
+        <div class="i_div_drop lastOne" (drop)="drop(arrImages.length)" (dragenter)="allowDrop($event,arrImages.length)" (dragleave)="allowDrop()" [ngClass]="{'animadrop':( arrImages.length === hoverI)}">
+        </div>
+    </div>
+</div>
+
+<div class="modulo" *ngIf="editar">
+    <div class="explanation_modulo">
+        Filesystem: explorador de imagenes en disco | {{selectedPath}} |
+        <button *ngIf="selectedPath" class="btn btn-success text-white" (click)="newImage()" title="only empty folders can be deleted" disabled="{{selectedFolderWiev.children}}"> delete folder</button>
+    </div>
+    <div class="flex_container flex_between animated fadeIn">
+        <div id="filesystem">
+            <div class="tree">
+                <ul>
+                    <li>
+                        Upload
+                        <ul>
+                            <li *ngFor="let level1 of uploadFolder" class="level1" [ngClass]="{'visible':  selectedPath.includes(level1.path) }">
+                                <span (click)=" select(level1)" [ngClass]="{ 'folder': level1.type ==='directory' , 'selectedFolder' : level1.path === selectedPath, 'selectedFile' : level1 === selectedFile }">
+                                    <div  class="folder_image"></div>
+                                    {{level1.name}}
+                                </span>
+
+                                <ul *ngIf="level1.type === 'directory'" class="ul-dir-list">
+                                    <li *ngFor="let level2 of level1.children" [ngClass]="{'visible':  selectedPath.includes(level2.path) }">
+                                        <span (click)="select(level2)" [ngClass]="{ 'folder': level2.type ==='directory' , 'selectedFolder' : level2.path === selectedPath, 'selectedFile' : level2 === selectedFile }">
+                                            <div  class="folder_image"></div>
+                                            {{level2.name}}
+                                        </span>
+
+                                        <ul *ngIf="level2.type === 'directory'" class="ul-dir-list">
+                                            <li *ngFor="let level3 of level2.children" [ngClass]="{'visible':  selectedPath.includes(level3.path) }">
+                                                <span (click)="select(level3)" [ngClass]="{ 'folder': level3.type ==='directory' , 'selectedFolder' : level3.path === selectedPath, 'selectedFile' : level3 === selectedFile }">
+                                                    <div  class="folder_image"></div>
+                                                    {{ level3.name}}
+                                                </span>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div id="folder_wiev" class="animated fadeIn">
+            <div class="item_folder" *ngFor="let item of selectedFolderWiev.children">
+                <img *ngIf="item.type === 'directory'" src="../assets/images/folder.png" (click)="select(item)" alt="{{item.alt}}" [ngClass]="{ 'selectedFile' : item.path === selectedFile }">
+                <img *ngIf="item.type !== 'directory'" src="../assets/images/nostromo.jpg" (click)="select(item)" alt="{{item.alt}}" draggable="true" (dragstart)="drag(-1 ,item )" [ngClass]="{ 'selectedFile' : item === selectedFile }">
+                <span>{{ item.name}}</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modulo" *ngIf="editar">
+    <div class="explanation_modulo" *ngIf="!editI">
+        <button class="btn btn-primary text-white " (click)="newImage()">Upload Imagen</button>
+    </div>
+
+
+    <div class="submodulo" *ngIf="selectedImage._id || writeNew">
+        <div class="explanation_modulo">
+            Información de la imagen en BBDD:
+            <button *ngIf="selectedImage._id && !writeNew && !editI" class="btn btn-success text-white mr-2 " (click)="editarImage(true)">editar</button>
+            <button *ngIf="!editI && selectedImage._id" class="btn btn-success text-white mr-2 " (click)="deleteImage()">eliminar</button>
+            <button *ngIf="editI" class="btn btn-success text-white mr-2 " (click)="cancelEdit(false)">cancelar</button>
+            <button *ngIf="editI" type="submit" class="btn btn-success text-white mr-2 " (click)="saveImage(selectedImage)" [disabled]="!form.valid">guardar</button>
+        </div>
+        <div id="info_file" class="animated slow fadeIn">
+            <form class="formObject" #form="ngForm" novalidate="" (ngSubmit)="saveImage(form)">
+                <div class="form-group" *ngIf="selectedImage">
+                    <label for="name">Name</label>
+                    <input type="text" class="form-control" name="formname" [(ngModel)]="selectedImage.name" disabled="{{!writeNew}}">
+                    <small id="emailHelp" class="form-text text-muted">nombre sin la extension</small>
+                </div>
+                <div class="form-group">
+                    <label for="alt">Alt (descripción)</label>
+                    <input type="text" class="form-control" name="formalt" [(ngModel)]="selectedImage.alt" disabled="{{!editI}}">
+                </div>
+                <div class="form-group">
+                    <label for="estado">Estado</label>
+                    <select class="custom-select" name="formact" name="formact" [(ngModel)]="selectedImage.act" disabled="{{!editI}}" required>
+                        <option value='true' selected>Publicado</option>
+                        <option value='false'>Oculto</option>
+                    </select>
+                </div>
+                <div class="form-group" *ngIf="!editI">
+                    <label for="extension">Ext</label>
+                    <input type="text" class="form-control" name="formext" [(ngModel)]="selectedImage.extension" disabled="true">
+                </div>
+                <div class="form-group">
+                    <label for="folder">Folder</label>
+                    <input type="text" class="form-control" name="formfolder" [(ngModel)]="selectedImage.folder" disabled="{{!writeNew}}">
+                </div>
+                <div class="form-group" *ngIf="!selectedImage._id">
+                    <label for="myfile">Select a file:</label>
+                    <input type="file" id="myfile" class="form-control" name="inputFile" (change)="selectUploadFile($event)" required>
+                    <small id="emailHelp" class="form-text text-muted">.jpg .png .gif</small>
+                </div>
+            </form>
+
+        </div>
+        <div *ngIf="selectedFile" class="explanation_modulo">Informacion del archivo en disco:
+            <ul *ngIf="selectedFile.name" class="animated slow slideInDown">
+                <li>{{selectedFile.name}}</li>
+                <li>{{selectedFile.path}}</li>
+                <li>{{selectedFile.size_kb}}</li>
+            </ul>
+        </div>
+    </div>
+</div>

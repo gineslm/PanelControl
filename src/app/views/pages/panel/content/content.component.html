@@ -1,0 +1,89 @@
+<form class="formObject" #forma="ngForm" novalidate="">
+
+    <div class="form-group">
+        <label for="estado">Estado</label>
+        <select class="custom-select" name="formact" [(ngModel)]="selectedObject.act" disabled="{{ selectedObject._id !== undefined }}" required>
+            <option value='true' selected>Publicado</option>
+            <option value='false'>Oculto</option>
+        </select>
+        <small id="emailHelp" class="form-text text-muted">Especifique el estado</small>
+    </div>
+
+    <div class="form-group">
+        <label for="destino">Destino</label>
+        <input type="text" class="form-control" name="formdestino" [(ngModel)]="selectedObject.destino" disabled="{{ selectedObject._id !== undefined }}" required minlength="3">
+        <small id="emailHelp" class="form-text text-muted">Es necesario introducir un destino</small>
+    </div>
+
+    <div class="form-group">
+        <label for="area">Área</label>
+        <input type="text" class="form-control" name="formarea" [(ngModel)]="selectedObject.area" disabled="{{ selectedObject._id !== undefined }}" required minlength="2">
+        <small id="emailHelp" class="form-text text-muted">Es necesario introducir un área</small>
+    </div>
+
+    <div class="form-group">
+        <label for="clase">Clase</label>
+        <select class="custom-select" name="formclase" [(ngModel)]="selectedObject.clase" disabled="{{ selectedObject._id !== undefined }}" required>
+        <option value="IMAGEN">Imagen</option>
+        <option value="TEXTO">Texto</option>
+        <option value="MEDIA">Media</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="descripcion">Descripción</label>
+        <textarea class="form-control" name="formdescripcion" [(ngModel)]="selectedObject.descripcion" disabled="{{ selectedObject._id !== undefined }}"></textarea>
+        <small id="emailHelp" class="form-text text-muted">La descripcion es obligatoria y no puede ser modificada</small>
+    </div>
+
+    <div class="form-group">
+        <label for="estilo">Estilo</label>
+        <input type="text" class="form-control" name="formestilo" [(ngModel)]="selectedObject.estilo" disabled="{{ selectedObject._id !== undefined }}">
+    </div>
+
+
+    <!-- estos son los contenidos editables -->
+
+    <div class="form-group">
+        <label for="text">Texto</label>
+        <textarea class="form-control" name="formtext" [(ngModel)]="selectedObject.text" disabled="{{!editar}}"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="image">Imagen</label>
+        <input type="text" class="form-control" name="formimage" [(ngModel)]="selectedObject.image" disabled="{{!editar}}">
+    </div>
+
+    <div class="form-group">
+        <label for="media">Media</label>
+        <input type="text" class="form-control" name="formmedia" [(ngModel)]="selectedObject.media" disabled="{{!editar}}">
+    </div>
+
+    <div class="form-group">
+        <label for="link">Link</label>
+        <input type="text" class="form-control" name="formlink" [(ngModel)]="selectedObject.link" disabled="{{!editar}}">
+    </div>
+
+    <div class="form-group">
+        <label for="autor">Autor</label>
+        <input type="text" class="form-control" name="formautor" [(ngModel)]="selectedObject.autor" disabled="{{!editar}}">
+    </div>
+
+</form>
+
+
+<pre class="previo">
+    info Objt:
+        _id: {{ selectedObject._id }}
+        act:  {{ selectedObject.act }}
+        destino: {{ selectedObject.destino }}
+        area: {{ selectedObject.area }}
+        clase: {{ selectedObject.clase }}
+        estilo: {{ selectedObject.estilo }}
+        descripcion: {{ selectedObject.descripcion }}
+        text: {{ selectedObject.text }}
+        image: {{ selectedObject.image }}
+        media: {{ selectedObject.media }}
+        link: {{ selectedObject.link }}
+        autor: {{ selectedObject.autor }}
+</pre>

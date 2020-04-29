@@ -1,0 +1,148 @@
+<form class="formObject" #forma="ngForm" novalidate="">
+
+
+    <div class="form-group">
+        <label for="estado">Estado</label>
+        <select class="custom-select" name="formact" [(ngModel)]="selectedObject.act" disabled="{{ selectedObject._id !== undefined }}" required>
+            <option value='true' selected>Publicado</option>
+            <option value='false'>Oculto</option>
+        </select>
+        <small id="emailHelp" class="form-text text-muted">Especifique el estado</small>
+    </div>
+
+    <div class="form-group">
+        <label for="title">Titulo</label>
+        <input type="text" class="form-control" name="formtitle" [(ngModel)]="selectedObject.title" disabled="{{!editar}}" required minlength="3">
+        <small id="emailHelp" class="form-text text-muted">Es necesario introducir un título de 3 caracteres</small>
+    </div>
+
+    <div class="form-group">
+        <label for="fecha">Fecha</label>
+        <input type="datetime" class="form-control" name="formdate" [(ngModel)]="selectedObject.date" disabled="{{!editar}}" required>
+        <small id="emailHelp" class="form-text text-muted"> yyyy-mm-dd hh:mm:ss</small>
+    </div>
+
+    <div class="form-group">
+        <label for="lugar">Localidad</label>
+        <input type="text" class="form-control" name="formplace" [(ngModel)]="selectedObject.place" disabled="{{!editar}}" required>
+    </div>
+
+    <div class="form-group">
+        <label for="location">Dirección</label>
+        <input type="text" class="form-control" name="formlocation" [(ngModel)]="selectedObject.location" disabled="{{!editar}}" required>
+    </div>
+
+    <div class="form-group">
+        <label for="codigoPlus">Código de google Maps</label>
+        <input type="text" class="form-control" id="codigo" name="formcodigoPlus" [(ngModel)]="selectedObject.codigoPlus" disabled="{{!editar}}">
+        <small id="emailHelp" class="form-text text-muted"> Código de GoogleMaps</small>
+    </div>
+
+    <div class="form-group">
+        <label for="codigo">Categoria</label>
+        <select class="custom-select" name="formcategory" [(ngModel)]="selectedObject.category" disabled="{{!editar}}" required>
+            <option selected>selecciona una categoria</option>
+            <option value="PARTY">Party</option>
+            <option value="CIRCUS">Circus</option>
+            <option value="ART_SCENE">Art_scene</option>
+            </select>
+    </div>
+
+    <div class="form-group">
+        <label for="description">Descripción</label>
+        <textarea class="form-control" name="formdescription" [(ngModel)]="selectedObject.description" disabled="{{!editar}}" required></textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="texto">Información general</label>
+        <textarea class="form-control" name="formtext" [(ngModel)]="selectedObject.text" disabled="{{!editar}}" required></textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="tecnica">Información técnica</label>
+        <textarea class="form-control" name="formtecnica" [(ngModel)]="selectedObject.tecnic" disabled="{{!editar}}" required></textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="acceso">Acceso</label>
+        <textarea class="form-control" name="formaccess" [(ngModel)]="selectedObject.access" disabled="{{!editar}}" required></textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="crew">Crew</label>
+        <textarea class="form-control" name="formcrew" [(ngModel)]="selectedObject.crew" disabled="{{!editar}}"></textarea>
+    </div>
+    <div class="form-group">
+        <label for="image">Imagenes</label>
+        <app-image [selectedObject]="selectedObject" [selectedModel]="selectedModel" [(editar)]="editar" (notify)="onNotify($event)"></app-image>
+    </div>
+
+    <!--     <div class="form-group">
+        <label for="image">Imagenes</label>
+        <ul class="list-group list-group-flush">
+            <li *ngFor="let item of selectedObject.image; index as i" class="listimg">
+                <div *ngIf="editar" class="imgedit" id="listaImg_{{i}}" draggable="true" (drag)="drag($event,i)" (drop)="drop($event,i)" (dragover)="allowDrop($event)" [ngClass]="{ 'dragSelected':( i === dragI ),'droped':( i === dropI ) }">
+                    <span class="ordenitem">{{i+1}} - </span> {{ item.name }}
+                    <button (click)="deleteImg(i)" class="deleteItem" *ngIf="editar">Eliminar</button>
+                </div>
+                <div *ngIf="!editar" class='imgnoedit'>
+                    <span class="ordenitem">{{i+1}} - </span> {{ item.name }}
+                </div>
+            </li>
+        </ul>
+
+        <div *ngIf="editar" class="newimg">
+            <span>Nueva Imagen:</span> <input type="text" class="form-control" name="formnewimage" [(ngModel)]="newImg">
+            <button (click)="insertNewImg()">Añadir imagen</button>
+        </div>
+    </div> -->
+
+    <div class="form-group">
+        <label for="media">Media</label>
+        <input type="text" class="form-control" name="formmedia" [(ngModel)]="selectedObject.media" disabled="{{!editar}}">
+    </div>
+
+
+    <div class="form-group">
+        <label for="links">Links</label>
+        <ul id="linkbox">
+            <li *ngFor="let link of selectedObject.links; index as i">
+                <div>{{i+1}}</div>
+                <div>
+                    <input type="text" class="form-control side-a" name="formdesc{{i}}" [(ngModel)]="link.desc" disabled="{{!editar}}">
+                    <input type="text" class="form-control side-b" name="formlink{{i}}" [(ngModel)]="link.link" disabled="{{!editar}}">
+                    <button (click)="deleteLink(i)" *ngIf="editar">Borrar link</button>
+                </div>
+            </li>
+            <div *ngIf="editar" class='divnewlink'>
+                <span>Nuevo link:</span>
+                <input type="text" class="form-control side-a" name="formnewlinkdesc" [(ngModel)]="newLink.desc" placeholder="escribe una descripción ...">
+                <input type="text" class="form-control side-b" name="formnewlinklink" [(ngModel)]="newLink.link" placeholder="introduce la direccion web ...">
+                <button (click)="insertNewLink()">Añadir link</button>
+            </div>
+        </ul>
+    </div>
+
+
+</form>
+
+<pre class="previo">
+    info Objt:
+        <b>id:</b> {{ selectedObject._id }}
+        <b>act:</b> {{ selectedObject.act }}
+        <b>title:</b> {{ selectedObject.title }}
+        <b>date:</b> {{ selectedObject.date }}
+        <b>place:</b> {{ selectedObject.place }}
+        <b>location:</b> {{ selectedObject.location }}
+        <b>codigoPlus:</b> {{ selectedObject.codigoPlus }}
+        <b>description:</b> {{ selectedObject.description }}
+        <b>text:</b> {{ selectedObject.text }}
+        <b>tecnic:</b> {{ selectedObject.tecnic }}
+        <b>access:</b> {{ selectedObject.access }}
+        <b>crew:</b> {{ selectedObject.crew }}
+        <b>image:</b> {{ selectedObject.image }}
+        <b>media</b> {{ selectedObject.media }}
+        <b>category:</b> {{ selectedObject.category }}
+        <b>links:</b> {{ selectedObject.links }}
+
+</pre>

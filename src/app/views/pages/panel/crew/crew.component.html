@@ -1,0 +1,91 @@
+<form class="formObject" #forma="ngForm" novalidate="">
+
+    <div class="form-group">
+        <label for="estado">Estado</label>
+        <select class="custom-select" name="formact" [(ngModel)]="selectedObject.act" disabled="{{ selectedObject._id !== undefined }}" required>
+            <option value='true' selected>Publicado</option>
+            <option value='false'>Oculto</option>
+        </select>
+        <small id="emailHelp" class="form-text text-muted">Especifique el estado</small>
+    </div>
+
+    <div class="form-group">
+        <label for="name">Nombre</label>
+        <input type="text" class="form-control" name="formname" [(ngModel)]="selectedObject.name" disabled="{{!editar}}" required minlength="3">
+        <small id="emailHelp" class="form-text text-muted">Es necesario introducir un nombre</small>
+    </div>
+
+    <div class="form-group">
+        <label for="lastname">Apellidos</label>
+        <input type="text" class="form-control" name="formlastname" [(ngModel)]="selectedObject.lastname" disabled="{{!editar}}" required minlength="5">
+        <small id="emailHelp" class="form-text text-muted">Es necesario introducir los apellidos</small>
+    </div>
+
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input type="text" class="form-control" name="formemail" [(ngModel)]="selectedObject.email" disabled="{{!editar}}">
+        <small id="emailHelp" class="form-text text-muted">Es necesario introducir un email</small>
+    </div>
+
+    <div class="form-group">
+        <label for="image">Imagen</label>
+        <input type="text" class="form-control" name="formimage" [(ngModel)]="selectedObject.image" disabled="{{!editar}}">
+    </div>
+
+    <div class="form-group">
+        <label for="date">Date</label>
+        <input type="text" class="form-control" name="formdate" [(ngModel)]="selectedObject.date" disabled="{{!editar}}">
+    </div>
+
+    <div class="form-group">
+        <label for="roles">Roles</label>
+        <input type="text" class="form-control" name="formroles" [(ngModel)]="selectedObject.roles" disabled="{{!editar}}">
+    </div>
+
+    <div class="form-group">
+        <label for="social">Social</label>
+        <ul>
+            <li *ngIf="editar || selectedObject.social.facebook">Facebook: <input type="text" class="form-control" name="formfacebook" [(ngModel)]="selectedObject.social.facebook" disabled="{{!editar}}"></li>
+            <li *ngIf="editar || selectedObject.social.instagram">Instagram: <input type="text" class="form-control" name="forminstagram" [(ngModel)]="selectedObject.social.instagram" disabled="{{!editar}}"></li>
+            <li *ngIf="editar || selectedObject.social.youtube">Youtube: <input type="text" class="form-control" name="formyoutube" [(ngModel)]="selectedObject.social.youtube" disabled="{{!editar}}"></li>
+            <li *ngIf="editar || selectedObject.social.linkedin">LinkedIN: <input type="text" class="form-control" name="formlinkedin" [(ngModel)]="selectedObject.social.linkedin" disabled="{{!editar}}"></li>
+        </ul>
+    </div>
+
+
+
+    <div class="form-group">
+        <label for="links">Links</label>
+        <ul id="linkbox">
+            <li *ngFor="let link of selectedObject.links; index as i">
+                <div>{{i+1}}</div>
+                <div>
+                    <input type="text" class="form-control side-a" name="formdesc{{i}}" [(ngModel)]="link.desc" disabled="{{!editar}}">
+                    <input type="text" class="form-control side-b" name="formlink{{i}}" [(ngModel)]="link.link" disabled="{{!editar}}">
+                    <button (click)="deleteLink(i)" *ngIf="editar">Borrar link</button>
+                </div>
+            </li>
+            <div *ngIf="editar" class='divnewlink'>
+                <span>Nuevo link:</span>
+                <input type="text" class="form-control side-a" name="formnewlinkdesc" [(ngModel)]="newLink.desc" placeholder="escribe una descripción ...">
+                <input type="text" class="form-control side-b" name="formnewlinklink" [(ngModel)]="newLink.link" placeholder="introduce la direccion web ...">
+                <button (click)="insertNewLink()">Añadir link</button>
+            </div>
+        </ul>
+    </div>
+
+
+</form>
+
+<pre class="previo">
+    info Objt:
+        id: {{ selectedObject._id }}
+        act: {{ selectedObject.act }}
+        name: {{ selectedObject.name }}
+        lastname: {{ selectedObject.lastname }}
+        email: {{ selectedObject.email }}
+        image: {{ selectedObject.image }}
+        roles: {{ selectedObject.roles }}
+        social: {{ selectedObject.social }}
+        links: {{ selectedObject.links }}
+</pre>

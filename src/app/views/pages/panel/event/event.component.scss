@@ -1,0 +1,36 @@
+.select-destacado {
+    font-weight: bold;
+    color: primary;
+}
+
+.listimg {
+    list-style: none;
+}
+
+.imgedit {
+    background-color: #eae3e3;
+    border-radius: 3px;
+    border: 2px;
+    padding: 7px 22px;
+    cursor: grab;
+    margin: 1px 0;
+    border: solid 2px #d9dfe4;
+}
+
+.imgedit:hover,
+.droped {
+    border: solid 2px #4fa2f4;
+}
+
+.ordenitem {
+    color: grey;
+}
+
+.dragSelected {
+    background-color: #4fa2f4;
+    opacity: 0.7;
+}
+
+.newimg {
+    margin-top: 1em;
+}

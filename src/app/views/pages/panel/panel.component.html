@@ -1,0 +1,88 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light animated slideInDown">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+
+
+            <!-- seleccionamos la tabla en la que queremos operar -->
+            <li class="nav-item" *ngFor="let item of arrModels">
+                <a class="nav-link" (click)="getData(item)">{{ item }}</a>
+            </li>
+
+
+        </ul>
+    </div>
+</nav>
+
+
+
+<section>
+
+
+    <div id="lista">
+        <ul class="list-group ">
+            <li *ngFor="let item of selectedData" class="list-group-item animated slideInLeft ">
+                <!-- listado de botones de la tabla lateral con los elementos de la tabla-->
+                <button *ngIf=" selectedModel=== 'Event'" type="button " class="btn btn-primary item" (click)="selectObject(item) " [ngClass]="{ 'disabled':( item._id !== selectedObject?._id )}">  {{item.title}} , {{item.date  | date:"dd/MMM/yyyy"}}  {{item.place}}</button>
+                <button *ngIf=" selectedModel==='Content'" type="button " class="btn btn-primary item" (click)="selectObject(item) " [ngClass]="{ 'disabled':( item._id !== selectedObject?._id )}"> {{item.destino }} - {{item.area }} - {{item.clase }} <!--  {{ item.descripcion.slice(0, 10)}}  --> </button>
+                <button *ngIf=" selectedModel==='Crew' " type="button " class="btn btn-primary item" (click)="selectObject(item) " [ngClass]="{ 'disabled':( item._id !== selectedObject?._id )}">  {{item.name}} {{item.lastname}}</button>
+                <button *ngIf=" selectedModel=== 'User'" type="button " class="btn btn-primary item" (click)="selectObject(item) " [ngClass]="{ 'disabled':( item._id !== selectedObject?._id )}">  {{item.name}} </button>
+                <button *ngIf=" selectedModel=== 'Image'" type="button " class="btn btn-primary item" (click)="selectObject(item) " [ngClass]="{ 'disabled':( item._id !== selectedObject?._id )}">  {{item.name}} </button>
+
+
+                <button *ngIf="!item.act" class="btn btn-secondary text-white mr-2 estado" (click)="actObj( item._id, 'true') ">null</button>
+                <button *ngIf="item.act" class="btn btn-success text-white mr-2 estado" (click)="actObj( item._id, 'false') ">act</button>
+
+
+            </li>
+
+        </ul>
+    </div>
+
+
+
+
+    <div id="pantalla">
+        {{ selectedObject?._id}}
+        <div *ngIf="selectedModel !=='Image'">
+            <div *ngIf="selectedObject === null && selectedModel !== null " class="animated fadeIn">
+                <button class="btn btn-success text-white mr-2 " (click)="newObj() ">crear nuevo</button>
+                <ul class="list-group mr-3 ">
+                    <li class="list-group-item ">
+                        <h3>Información general de la tabla</h3>
+                    </li>
+                    <li class="list-group-item ">descripcion</li>
+                    <li class="list-group-item ">numero de elementos</li>
+                </ul>
+            </div>
+
+            <div *ngIf="selectedObject !== null">
+                <!-- acciones comunes para selectedObject -->
+                <div class="botones mb-4 ">
+                    <button class="btn btn-primary text-white mr-2 " (click)="startEdition() " [ngClass]="{ 'disabled':( editar )} ">editar</button>
+                    <button *ngIf="editar" class="btn btn-danger mr-2" (click)="cancelEdition()">cancelar edición</button>
+                    <button *ngIf="editar" class="btn btn-success mr-2" (click)="saveObject()">guardar edición</button>
+                    <button *ngIf="!editar" class="btn btn-danger text-white mr-2 " (click)="deleteObj() " [ngClass]="{ 'disabled':( editar )} ">eliminar</button>
+                    <button *ngIf="!editar" class="btn btn-success text-white mr-2 " (click)="newObj() " [ngClass]="{ 'disabled':( editar )} ">crear nuevo</button>
+                </div>
+                <!-- cargamos el modulo que administra la vista de cada uno de los modelos -->
+                <app-event *ngIf=" selectedModel==='Event'" [selectedObject]="selectedObject" [selectedModel]="selectedModel" [(editar)]="editar" (notify)="onNotify($event)"></app-event>
+                <app-crew *ngIf="selectedModel==='Crew'" [selectedObject]="selectedObject" [selectedModel]="selectedModel" [(editar)]="editar" (notify)="onNotify($event)"></app-crew>
+                <app-content *ngIf="selectedModel==='Content'" [selectedObject]="selectedObject" [selectedModel]="selectedModel" [(editar)]="editar" (notify)="onNotify($event)"></app-content>
+                <app-user *ngIf="selectedModel==='User'" [selectedObject]="selectedObject" [selectedModel]="selectedModel" [(editar)]="editar" (notify)="onNotify($event)"></app-user>
+            </div>
+
+        </div>
+
+
+        <app-image *ngIf="selectedModel==='Image'" [selectedModel]="selectedModel" [(selectedObject)]="selectedObject" [selectedData]="selectedData" [(editar)]="editar" (emitselectedObject)="recibeSelectImage($event)" (notify)="onNotify($event)"></app-image>
+
+
+
+    </div>
+
+
+</section>

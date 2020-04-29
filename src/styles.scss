@@ -1,0 +1,75 @@
+/* You can add global styles to this file, and also import other style files */
+
+.previo {
+    color: #4c657d;
+    font-size: 0.8em;
+    width: 95%;
+    background-color: #ececec;
+    padding: 2em 0;
+}
+
+.formObject {
+    padding-bottom: 2em;
+    width: 95%;
+    margin: auto;
+    font-size: 0.9em;
+    label {
+        color: #2125297a;
+    }
+    .form-control {
+        background-color: white;
+        border: 1px solid #7bbdff;
+    }
+    .form-control:disabled,
+    .form-control[readonly] {
+        background-color: #ece4e4;
+        border: 1px solid #c6bdbd;
+        opacity: 1;
+    }
+    .ng-touched .ng-invalid {
+        border: solid 2px rgba(255, 0, 0, 0.4);
+        background-color: #ff00001c;
+    }
+    .form-group {
+        margin-bottom: 1rem;
+        border: 1px solid #d9d8d8;
+        border-radius: 4px;
+        padding: 0.4em;
+        background-color: #f7f5f5;
+    }
+    .form-group span {
+        color: grey;
+    }
+    #linkbox {
+        margin: 0px;
+        padding: 0px;
+    }
+    #linkbox li {
+        margin: 0px;
+        list-style: none;
+    }
+    #linkbox div {}
+    #linkbox .order {
+        width: 2em;
+        padding: 5px;
+    }
+    .side-a {
+        border-radius: 4px 4px 0 0;
+        margin-bottom: 2px;
+    }
+    .side-b {
+        border-radius: 0 0 4px 4px;
+    }
+    .divnewlink {
+        margin-top: 1em;
+    }
+    .custom-select:disabled {
+        background-color: #ece4e4;
+        border: 1px solid #c6bdbd;
+    }
+    .custom-select {
+        background-color: white;
+        border: 1px solid #7bbdff;
+        cursor: pointer;
+    }
+}
